@@ -1,0 +1,34 @@
+const { FlatfileClient } = require("@flatfile/api");
+//import FFClient from "@flatfile/api"
+const fs = require("fs");
+const path = require("path");
+// Outside of our deployed listeners, we'll need to configure the api with our key
+const api = new FlatfileClient({ token:"sk_efb599d2ab3249e982a1b341b76bd83c" });
+
+const dataFilePath = path.join(__dirname, "./inventory.csv");
+const readStream = fs.createReadStream(dataFilePath);
+
+async function daily() {
+  try {
+    // To make it easier to find, we'll include the date in our space name
+    const date = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date());
+    const name = `test-location-workbook-3`;
+
+    // Create a space
+    //console.log(await FFClient.spaces.list())
+    const space = await api.spaces.create({ name, namespace:"newapp2", autoConfigure: true });
+    console.log(await api.spaces.list())
+    const { id: spaceId, environmentId } = space.data;
+    console.log("created space", space)
+    // Upload a file to the space
+    //await api.files.upload(readStream, { spaceId, environmentId });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+daily();
