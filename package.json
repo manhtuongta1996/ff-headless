@@ -2,10 +2,11 @@
   "name": "FlatfileApp",
   "dependencies": {
     "@flatfile/api": "1.5.24",
+    "@flatfile/hooks": "1.5.0",
     "@flatfile/listener": "0.3.15",
     "@flatfile/plugin-export-workbook": "^0.1.2",
     "@flatfile/plugin-record-hook": "1.6.0",
-    "@flatfile/hooks": "1.5.0",
+    "axios": "^1.7.3",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {

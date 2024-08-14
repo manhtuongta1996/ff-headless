@@ -28,13 +28,13 @@ export default function flatfileEventListener(listener) {
               environmentId,
               ...locationTemplate
             })
-            for (let i=0; i < 1000000; i++){
-              await api.workbooks.create({
-                spaceId,
-                environmentId,
-                ...locationTemplate
-              })
-            }
+            
+            await api.workbooks.create({
+              spaceId,
+              environmentId,
+              ...locationTemplate
+            })
+            
             
             // await api.workbooks.create({
             //   spaceId,

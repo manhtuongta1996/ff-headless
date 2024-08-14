@@ -12,7 +12,7 @@ import { booleanValue } from '../modifiers/boolean-value';
 import { trimValue } from '../modifiers/trim-value';
 import { locationAddressValidation } from '../validators/location-address-validation';
 import { stateCountryCheck } from '../validators/state-country-check';
-
+import {getFlatFileMappedStateList} from "../lib/request/get-country-states"
 // import {
 //   getFlatFileMappedCountryList,
 //   getFlatFileMappedStateList,
@@ -69,7 +69,14 @@ export async function createLocationEnterpriseTemplate(): Promise<
   //     }
   // );
   // if FF isCountryStatesListEnabledInFF enabled then
-  // stateRows = await getFlatFileMappedStateList();
+  try {
+    stateRows = await getFlatFileMappedStateList();
+    console.log('======State rows success=======', stateRows)
+
+  } catch (err){
+    console.error('======State rows failed=======', err)
+
+  }
   // countryRows = await getFlatFileMappedCountryList();
     
 
