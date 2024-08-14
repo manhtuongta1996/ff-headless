@@ -71,12 +71,13 @@ export async function createLocationEnterpriseTemplate(): Promise<
   // if FF isCountryStatesListEnabledInFF enabled then
   try {
     stateRows = await getFlatFileMappedStateList();
-    console.log('======State rows success=======', stateRows)
 
   } catch (err){
     console.error('======State rows failed=======', err)
 
   }
+  console.log('======State rows success=======', stateRows)
+
   // countryRows = await getFlatFileMappedCountryList();
     
 
@@ -95,12 +96,12 @@ export async function createLocationEnterpriseTemplate(): Promise<
       sheetSlug: 'locations',
       booleanFields: ['isWorkplace', 'isPayrollEntity'],
     }),
-    stateCountryCheck({
-      sheetSlug: 'locations',
-      stateField: 'state',
-      countryField: 'country',
-      referenceData: stateRows,
-    }),
+    // stateCountryCheck({
+    //   sheetSlug: 'locations',
+    //   stateField: 'state',
+    //   countryField: 'country',
+    //   referenceData: stateRows,
+    // }),
     trimValue({
       sheetSlug: 'locations',
       trimFields: [
@@ -119,12 +120,12 @@ export async function createLocationEnterpriseTemplate(): Promise<
   ];
 
   
-    locationEnterpriseHooks.push(
-      locationAddressValidation({
-        sheetSlug: 'locations',
-      })
-    );
-  
+  locationEnterpriseHooks.push(
+    locationAddressValidation({
+      sheetSlug: 'locations',
+    })
+  );
+
 
   return {
     name: 'Enterprise Location Sync',
@@ -329,7 +330,7 @@ export async function createLocationEnterpriseTemplate(): Promise<
         // dataSource: await getTimezones({
         //   Timezone: 'Name',
         // }),
-        dataSource: null,
+        dataSource: [{Name:{value:"Sydney"}}],
       },
     ],
   };

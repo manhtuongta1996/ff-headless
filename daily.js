@@ -18,7 +18,7 @@ async function daily() {
       month: "2-digit",
       day: "2-digit",
     }).format(new Date());
-    const name = `test-location-workbook-6`;
+    const name = `test-location-workbook-7`;
 
     // Create a space
     //console.log(await FFClient.spaces.list())

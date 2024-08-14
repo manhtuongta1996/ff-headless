@@ -58,7 +58,6 @@ export async function getFlatFileMappedStateList(): Promise<
   Flatfile.RecordData[] | null
 > {
   const countriesWithStates = await getCachedCountryList();
-    console.log("+++++++++++countriesWithStates++++++++++", countriesWithStates)
   if (!countriesWithStates.countries) {
     logger('Failed to fetch states', ['getFlatFileMappedStateList']);
     return null;
