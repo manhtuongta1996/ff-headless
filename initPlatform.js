@@ -38,21 +38,24 @@ var FlatfileClient = require("@flatfile/api").FlatfileClient;
 //import FFClient from "@flatfile/api"
 var path = require("path");
 var dotenv = require("dotenv");
+var fs = require("fs");
 dotenv.config();
 // Outside of our deployed listeners, we'll need to configure the api with our key
 var api = new FlatfileClient({ token: process.env.FLATFILE_API_KEY });
 function initPlatform(namespace, spacename) {
     return __awaiter(this, void 0, void 0, function () {
-        var name_1, space, error_1;
+        var spaceId, environmentId, dataFilePath, readStream, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    name_1 = spacename;
-                    return [4 /*yield*/, api.spaces.create({ name: name_1, namespace: namespace, autoConfigure: true })];
+                    spaceId = "us_sp_CW2vBEN3";
+                    environmentId = "us_env_9zBv5p0c";
+                    dataFilePath = path.join(__dirname, "./test_location.csv");
+                    readStream = fs.createReadStream(dataFilePath);
+                    return [4 /*yield*/, api.files.upload(readStream, { spaceId: spaceId, environmentId: environmentId })];
                 case 1:
-                    space = _a.sent();
-                    console.log("created space", space);
+                    _a.sent();
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();

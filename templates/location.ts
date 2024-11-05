@@ -12,7 +12,8 @@ import { booleanValue } from '../modifiers/boolean-value';
 import { trimValue } from '../modifiers/trim-value';
 import { locationAddressValidation } from '../validators/location-address-validation';
 import { stateCountryCheck } from '../validators/state-country-check';
-import {getFlatFileMappedStateList} from "../lib/request/get-country-states"
+import {getFlatFileMappedCountryList, getFlatFileMappedStateList} from "../lib/request/get-country-states"
+import { getTimezones } from '../lib/request/get-timezones';
 // import {
 //   getFlatFileMappedCountryList,
 //   getFlatFileMappedStateList,
@@ -71,12 +72,12 @@ export async function createLocationEnterpriseTemplate(): Promise<
   // if FF isCountryStatesListEnabledInFF enabled then
   try {
     stateRows = await getFlatFileMappedStateList();
-
+    countryRows = await getFlatFileMappedCountryList();
   } catch (err){
-    console.error('======State rows failed=======', err)
+    console.error('======State rows failed=======', err.config.headers)
 
   }
-  console.log('======State rows success=======', stateRows)
+  console.log('======State rows success=======')
 
   // countryRows = await getFlatFileMappedCountryList();
     
@@ -96,12 +97,12 @@ export async function createLocationEnterpriseTemplate(): Promise<
       sheetSlug: 'locations',
       booleanFields: ['isWorkplace', 'isPayrollEntity'],
     }),
-    // stateCountryCheck({
-    //   sheetSlug: 'locations',
-    //   stateField: 'state',
-    //   countryField: 'country',
-    //   referenceData: stateRows,
-    // }),
+    stateCountryCheck({
+      sheetSlug: 'locations',
+      stateField: 'state',
+      countryField: 'country',
+      referenceData: stateRows,
+    }),
     trimValue({
       sheetSlug: 'locations',
       trimFields: [
@@ -327,10 +328,9 @@ export async function createLocationEnterpriseTemplate(): Promise<
       },
       {
         sheetSlug: 'timezones',
-        // dataSource: await getTimezones({
-        //   Timezone: 'Name',
-        // }),
-        dataSource: [{Name:{value:"Sydney"}}],
+        dataSource: await getTimezones({
+          Timezone: 'Name',
+        })
       },
     ],
   };

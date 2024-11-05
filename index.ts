@@ -2,7 +2,7 @@ const namespace = ['space:newapp2'] // Change this to your app namespace
 import api, {Flatfile, FlatfileError, FlatfileTimeoutError,} from '@flatfile/api'
 import { recordHook } from '@flatfile/plugin-record-hook'
 import { exportWorkbookPlugin } from '@flatfile/plugin-export-workbook'
-import { FlatfileEvent } from '@flatfile/listener'
+import { FlatfileEvent, FlatfileListener } from '@flatfile/listener'
 import {createLocationEnterpriseTemplate} from "./templates/location"
 import {FlatfileFormatDataSource} from "./types/flatfile_types"
 import catcherRetryer from "./lib/request/catcher-retryer"
@@ -90,7 +90,7 @@ function logger(message: string, params: any): void {
   // @ts-ignore
   console.error(message, params);
 }
-export default function flatfileEventListener(listener) {
+export default function flatfileEventListener(listener: FlatfileListener) {
   let countTotalRecords = 0;
   let countTotalRecordsLoaded = 0;
   listener.on('**', (event: FlatfileEvent) => {
@@ -277,12 +277,16 @@ export default function flatfileEventListener(listener) {
           }
         }
       )
-      configure.on('file:updated',
+      configure.on('job:ready',{job:'file:updated'},
       async (event: FlatfileEvent) => {
-          console.log('getting file', event.context)
+          console.log('getting file---------------', event.context)
       })
     })
-
+    namespacedEvents.filter({job:'file:updated'}, (configure) => {
+      configure.on('job:ready', (event) =>{
+        console.log('--------++++++++_______File being loaded', event)
+      })
+    })
     namespacedEvents.use(
       recordHook('contacts', (record) => {
         const value = record.get('firstName')
